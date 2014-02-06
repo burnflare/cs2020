@@ -1,4 +1,6 @@
 *.class
+*.iml
+bin/
 
 # Package Files #
 *.jar
