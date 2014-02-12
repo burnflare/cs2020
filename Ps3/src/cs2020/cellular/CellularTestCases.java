@@ -1,3 +1,5 @@
+package cs2020.cellular;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -5,7 +7,7 @@ import org.junit.Test;
 public class CellularTestCases {
 	
 	@Test
-	public void testCase1(){
+	public void testCase1() throws Exception{
 		CoverageCalculator calc = new CoverageCalculator(100);
 	    calc.addTower(20, 5);
 	    calc.addTower(10, 5);
@@ -13,7 +15,7 @@ public class CellularTestCases {
 	}
 	
 	@Test
-	public void testCase2(){
+	public void testCase2() throws Exception{
 		CoverageCalculator calc = new CoverageCalculator(100);
 	    calc.addTower(20, 5);
 	    calc.addTower(10, 5);
@@ -23,7 +25,7 @@ public class CellularTestCases {
 	}
 	
 	@Test
-	public void testCase3(){
+	public void testCase3() throws Exception{
 		CoverageCalculator calc = new CoverageCalculator(100);
 	    calc.addTower(20, 5);
 	    calc.addTower(10, 5);
@@ -35,7 +37,7 @@ public class CellularTestCases {
 	}
 	
 	@Test
-	public void testCase4(){
+	public void testCase4() throws Exception{
 		CoverageCalculator calc = new CoverageCalculator(100);
 	    calc.addTower(20, 0);
 	    calc.addTower(40, 0);
