@@ -51,7 +51,7 @@ public abstract class QuestionTreeBase {
 	 */
 	public void buildTree(ArrayList<QuestionObject> objects) {
 		Collections.sort(objects);
-		TreeSet<String> setOfAllProperties = new TreeSet<String>();
+		HashSet<String> setOfAllProperties = new HashSet<String>();
 		for (QuestionObject questionObject : objects) {
 			Iterator<String> it = questionObject.propertyIterator();
 			while(it.hasNext()) {
@@ -61,25 +61,37 @@ public abstract class QuestionTreeBase {
 				}
 			}
 		}
-
-		m_root = buildEmptyTree(m_root, null, (TreeSet<String>) setOfAllProperties);
+		System.out.println("Done enumerting hash");
+		System.out.println("Building tree now");
+		String[] set = setOfAllProperties.toArray(new String[setOfAllProperties.size()]);
+		m_root = buildEmptyTree(m_root, null, set, 0);
+		System.out.println("Done with tree building");
 		
 		for (QuestionObject questionObject : objects) {
 			placeObjectInTree(questionObject, m_root, null);
 		}
-		printTree();
 	}
 	
 	private void placeObjectInTree(QuestionObject qObj, TreeNode<String> tree, TreeNode<String> previous) {
-		if(tree == null) {
-			tree = new LeafNode<String>(qObj.getName(), qObj);
-			return;
-		}
 		String s = tree.getValue();
 		
 		if(qObj.containsProperty(s)) {
+			if(tree.getRight()==null) {
+				tree.setRight(new LeafNode<String>(qObj.getName(), qObj));
+				return;
+			} else if(tree.getLeft()==null) {
+				tree.setLeft(new LeafNode<String>(qObj.getName(), qObj));
+				return;
+			}
 			placeObjectInTree(qObj, tree.getRight(), tree);
 		} else {
+			if(tree.getRight()==null) {
+				tree.setRight(new LeafNode<String>(qObj.getName(), qObj));
+				return;
+			} else if(tree.getLeft()==null) {
+				tree.setLeft(new LeafNode<String>(qObj.getName(), qObj));
+				return;
+			}
 			placeObjectInTree(qObj, tree.getLeft(), tree);
 		}
 	}
@@ -91,21 +103,18 @@ public abstract class QuestionTreeBase {
         print(tree.getRight());
     }
 	
-	private TreeNode<String> buildEmptyTree(TreeNode<String> tree, TreeNode<String> parent, TreeSet<String> iSet) {
-		if(iSet.isEmpty()) {
+	private TreeNode<String> buildEmptyTree(TreeNode<String> tree, TreeNode<String> parent, String[] iSet, int count) {
+		if(count >= iSet.length) {
 			return tree;
 		}
 		
-		Iterator<String> i = iSet.iterator();
-		String s = i.next();
-		iSet.remove(s);
+		String s = iSet[count];
+		count++;
 		
 		TreeNode<String> root = new TreeNode<String>(s);
-		TreeSet<String> lClone = (TreeSet<String>) iSet.clone();
-		TreeSet<String> rClone = (TreeSet<String>) iSet.clone();
 		
-		root.setLeft(buildEmptyTree(tree, root, lClone));
-		root.setRight(buildEmptyTree(tree, root, rClone));
+		root.setLeft(buildEmptyTree(tree, root, iSet, count));
+		root.setRight(buildEmptyTree(tree, root, iSet, count));
 		root.setParent(parent);
 		
 		return root;
@@ -125,21 +134,25 @@ public abstract class QuestionTreeBase {
 	 * the tree.
 	 */
 	public Query findQuery(){
-		if(countObjects(m_root.getLeft())<=countObjects(m_root.getRight()))
-			return constructQuery(findQueryHelper(m_root.getRight()));
-		else
-			return constructQuery(findQueryHelper(m_root.getLeft()));
+		if(countObjects(m_root.getLeft()) <= countObjects(m_root.getRight())) {
+			TreeNode<String> node = queryHelper(m_root.getRight());
+			return constructQuery(node);
+		}
+		else {
+			TreeNode<String> node = queryHelper(m_root.getLeft());
+			return constructQuery(node);
+		}
 	}
 	
-	private TreeNode<String> findQueryHelper(TreeNode<String> node){
-		int n_this = countObjects(node);
-		int n_full = countObjects();
-		if((n_this>(n_full/3))&&(n_this<=(2*n_full/3)))
+	private TreeNode<String> queryHelper(TreeNode<String> node){
+		int n = countObjects(node);
+		int last = countObjects();
+		if((n>(last/3))&&(n<=(2*last/3)))
 			return node;
 		if(countObjects(node.getLeft())<=countObjects(node.getRight()))
-			return (findQueryHelper(node.getRight()));
+			return (queryHelper(node.getRight()));
 		else
-			return (findQueryHelper(node.getLeft()));
+			return (queryHelper(node.getLeft()));
 	}
 	
 	

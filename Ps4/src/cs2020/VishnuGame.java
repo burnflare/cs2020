@@ -31,7 +31,7 @@ public class VishnuGame extends QuestionGameBase {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		VishnuGame obj = new VishnuGame("/Users/vishnu/Dev/cs2020/Ps4/TestDB_1.txt");
+		VishnuGame obj = new VishnuGame("TestDB_1.txt");
 		obj.playGame();
 	}
 
