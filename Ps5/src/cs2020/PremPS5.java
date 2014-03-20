@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cs2020;
 
 import java.io.BufferedReader;
@@ -9,23 +6,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-
 class Pair {
-	public HashSet<String> hs = new HashSet<String>(); public int count = 0;
+	public HashSet<String> hs = new HashSet<String>();
+	public int count = 0;
 }
 
-/**
- * @author vishnu
- *
- */
 public class PremPS5 {
-
-	/**
-	 * 
-	 */
-	public PremPS5() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public static void main(String[] args) {
 		for(String s : args) {
@@ -41,7 +27,6 @@ public class PremPS5 {
 		        int length;
 	        	Pair p;
 	        	
-	        	int hmcount = 0;
 		        while ((line = stringSort(bufferedDataFile.readLine())) != null) {
 		        	length = line.length();
 		        	p = hm.get(length);
@@ -49,7 +34,6 @@ public class PremPS5 {
 		        		p = new Pair();
 		        		p.hs.add(line);
 		        		hm.put(length, p);
-		        		hmcount++;
 		        	} else {
 			        	if(p.hs.contains(line)) { p.count++; }
 			        	else p.hs.add(line);
@@ -57,13 +41,12 @@ public class PremPS5 {
 				}
 		        
 		        int count = 0;
-		        for(Pair pp : hm.values()) {
-		        	if(pp.count==0) continue;
-		        	System.out.println(pp.count);
-		        	count += (pp.count*(pp.count+1))/2;
+		        for(Pair pr : hm.values()) {
+		        	if(pr.count==0) continue;
+		        	count += (pr.count*(pr.count+1))/2;
 		        }
 		        sw.stop();
-		        System.out.println(count + " " + sw.getTime() +" " + hmcount);
+		        System.out.println(count + " " + sw.getTime());
 			} catch (Exception e) {
 				System.out.println(e);
 			}
