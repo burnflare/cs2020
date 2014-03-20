@@ -35,16 +35,16 @@ public class PremPS5 {
 	        String line;
 	        
 	        while ((line = bufferedDataFile.readLine()) != null) {
-	        	String sLine = line;
+	        	String sLine = stringSort(line);
 	        	Pair p;
 	        	p = hm.get(sLine.length());
 	        	if(p==null) {
-	        		p = new Pair(new HashSet<StringComparator>(), 0);
+	        		p = new Pair(new HashSet<String>(), 0);
 	        		hm.put(sLine.length(), p);
 	        	}
 	        	
-	        	if(p.hs.contains(new StringComparator(sLine))) p.count++;
-	        	else p.hs.add(new StringComparator(sLine));
+	        	if(p.hs.contains(sLine)) p.count++;
+	        	else p.hs.add(sLine);
 			}
 	        int count = 0;
 	        for(Pair p : hm.values()) {
@@ -57,38 +57,30 @@ public class PremPS5 {
 			System.out.println(e);
 		}
 	}
-}
-
-class Pair {
-	HashSet<StringComparator> hs; int count;
-	public Pair(HashSet<StringComparator> hs, int count) {
-		this.hs = hs;
-		this.count = count;
-	}
-}
-
-class StringComparator {
-	String str;
-	public StringComparator(String str) {
-		this.str = stringSort(str);
-	}
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		StringComparator sc = (StringComparator) obj;
-		return str.equals(sc.str);
-	}
 	
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return str.hashCode();
-	}
 	private static String stringSort(String str) {
 		char[] a = str.toCharArray();
 		Arrays.sort(a);
 		return new String(a);
 	}
+}
+
+class Pair {
+	HashSet<String> hs; int count;
+	public Pair(HashSet<String> hs, int count) {
+		this.hs = hs;
+		this.count = count;
+	}
+}
+
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	public int compare(String o1, String o2) {
+		if(o1.length() < o2.length()) return -1;
+		else if(o1.length() > o2.length()) return 1;
+		return 0;
+	}
+	
 }
