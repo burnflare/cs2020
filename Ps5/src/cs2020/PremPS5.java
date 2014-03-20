@@ -72,15 +72,3 @@ class Pair {
 		this.count = count;
 	}
 }
-
-	/* (non-Javadoc)
-	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public int compare(String o1, String o2) {
-		if(o1.length() < o2.length()) return -1;
-		else if(o1.length() > o2.length()) return 1;
-		return 0;
-	}
-	
-}
