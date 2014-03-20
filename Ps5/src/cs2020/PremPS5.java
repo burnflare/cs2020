@@ -14,46 +14,45 @@ class Pair {
 public class PremPS5 {
 
 	public static void main(String[] args) {
-		for(String s : args) {
-			StopWatch sw = new StopWatch();
-			sw.start();
-			HashMap<Integer, Pair> hm = new HashMap<Integer, Pair>(500);
-			try {
-		        BufferedReader bufferedDataFile = new BufferedReader(new FileReader(s));
-		        bufferedDataFile.readLine(); // Dont care about size, discarding
-		        
-		        String line;
-		        int length;
-	        	Pair p;
-	        	int count = 0;
-	        	
-		        while ((line = stringSort(bufferedDataFile.readLine())) != null) {
-		        	length = line.length();
-		        	p = hm.get(length);
-		        	if(p==null) {
-		        		p = new Pair();
-		        		p.hs.add(line);
-		        		hm.put(length, p);
-		        	} else {
-			        	if(p.hs.contains(line)) { p.count++; }
-			        	else p.hs.add(line);
-		        	}
+		HashMap<Integer, Pair> hm = new HashMap<Integer, Pair>(500);
+		try {
+			BufferedReader bufferedDataFile = new BufferedReader(new FileReader(args[0]));
+			bufferedDataFile.readLine(); // Dont care about size, discarding
+
+			String line;
+			int length;
+			Pair p;
+			int count = 0;
+
+			while ((line = stringSort(bufferedDataFile.readLine())) != null) {
+				length = line.length();
+				p = hm.get(length);
+				if (p == null) {
+					p = new Pair();
+					p.hs.add(line);
+					hm.put(length, p);
+				} else {
+					if (p.hs.contains(line)) {
+						p.count++;
+					} else
+						p.hs.add(line);
 				}
-		        
-		        for(Pair pr : hm.values()) {
-		        	if(pr.count==0) continue;
-		        	count += (pr.count*(pr.count+1))/2;
-		        }
-		        sw.stop();
-		        System.out.println(count + " " + sw.getTime());
-			} catch (Exception e) {
-				System.out.println(e);
 			}
+
+			for (Pair pr : hm.values()) {
+				if (pr.count == 0)
+					continue;
+				count += (pr.count * (pr.count + 1)) / 2;
+			}
+			System.out.println(count);
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 	}
-	
+
 	private static String stringSort(String str) {
-		if(str==null) return null;
+		if (str == null)
+			return null;
 		char[] a = str.toCharArray();
 		Arrays.sort(a);
 		return new String(a);
