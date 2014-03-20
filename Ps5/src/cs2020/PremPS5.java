@@ -11,21 +11,7 @@ import java.util.HashSet;
 
 
 class Pair {
-	public HashSet<IntegerArr> hs = new HashSet<IntegerArr>();
-	public int count = 0;
-}
-
-class IntegerArr {
-	public Integer[] cArr;
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return Arrays.hashCode(cArr);
-	}
-	
-	public boolean equals(Object obj) {
-		IntegerArr IA = (IntegerArr) obj;
-		return Arrays.equals(cArr, IA.cArr);
-	}
+	public HashSet<String> hs = new HashSet<String>(); public int count = 0;
 }
 
 /**
@@ -54,33 +40,30 @@ public class PremPS5 {
 		        String line;
 		        int length;
 	        	Pair p;
-	        	IntegerArr IA;
 	        	
-		        while ((line = bufferedDataFile.readLine()) != null) {
+	        	int hmcount = 0;
+		        while ((line = stringSort(bufferedDataFile.readLine())) != null) {
 		        	length = line.length();
-		        	IA = new IntegerArr();
-	        		IA.cArr = freqChar(line);
-	        		
 		        	p = hm.get(length);
 		        	if(p==null) {
 		        		p = new Pair();
-		        		p.hs.add(IA);
+		        		p.hs.add(line);
 		        		hm.put(length, p);
+		        		hmcount++;
 		        	} else {
-			        	if(p.hs.contains(IA)) { p.count++; }
-			        	else {
-			        		p.hs.add(IA);
-			        	}
+			        	if(p.hs.contains(line)) { p.count++; }
+			        	else p.hs.add(line);
 		        	}
 				}
 		        
 		        int count = 0;
 		        for(Pair pp : hm.values()) {
 		        	if(pp.count==0) continue;
+		        	System.out.println(pp.count);
 		        	count += (pp.count*(pp.count+1))/2;
 		        }
 		        sw.stop();
-		        System.out.println(count + " " + sw.getTime());
+		        System.out.println(count + " " + sw.getTime() +" " + hmcount);
 			} catch (Exception e) {
 				System.out.println(e);
 			}
@@ -92,17 +75,5 @@ public class PremPS5 {
 		char[] a = str.toCharArray();
 		Arrays.sort(a);
 		return new String(a);
-	}
-	
-	private static Integer[] freqChar(String str) {
-		if(str==null) return null;
-		Integer[] arr = new Integer[256];
-		for (int i = 0; i < arr.length; i++) {
-			arr[i]=0;
-		}
-		for (int i = 0; i < str.length(); i++) {
-			arr[str.charAt(i)]++;
-		}
-		return arr;
 	}
 }
