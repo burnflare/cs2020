@@ -19,13 +19,13 @@ public class PremPS5 {
 			sw.start();
 			HashMap<Integer, Pair> hm = new HashMap<Integer, Pair>(500);
 			try {
-				FileReader dataFile = new FileReader(s);
-		        BufferedReader bufferedDataFile = new BufferedReader(dataFile);
+		        BufferedReader bufferedDataFile = new BufferedReader(new FileReader(s));
 		        bufferedDataFile.readLine(); // Dont care about size, discarding
 		        
 		        String line;
 		        int length;
 	        	Pair p;
+	        	int count = 0;
 	        	
 		        while ((line = stringSort(bufferedDataFile.readLine())) != null) {
 		        	length = line.length();
@@ -40,7 +40,6 @@ public class PremPS5 {
 		        	}
 				}
 		        
-		        int count = 0;
 		        for(Pair pr : hm.values()) {
 		        	if(pr.count==0) continue;
 		        	count += (pr.count*(pr.count+1))/2;
