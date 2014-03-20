@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 
 /**
  * @author vishnu
@@ -69,26 +70,15 @@ public class PremPS5 {
 	}
 	
 	private static int helper(String[] arr, int start, int end) {
-		for (int i = 0; i < arr.length; i++) {
-			arr[i] = stringSort(arr[i]);
-		}
-		System.out.println("Done stringSort");
-		Arrays.sort(arr, start, end);
-		String previous = null; int count = 0;
+		HashSet<String> hm = new HashSet<String>();
+		int count = 0;
 		for (int i = start; i < end; i++) {
-//			System.out.println(arr[i]);
-			if(arr[i].equals(previous)) {
-				count++;
-			}
-			previous = arr[i];
+			String s = stringSort (arr[i]);
+			if(hm.contains(s)) count++;
+			else hm.add(s);
 		}
-//		System.out.println(count);
-		return factorial(count);
+		return (count*(count+1))/2;
 	}
-	
-	public static int factorial(int n) {
-        return (n*(n+1))/2;
-    }
 	
 	private static String stringSort(String str) {
 		char[] a = str.toCharArray();
