@@ -24,6 +24,8 @@ public class PremPS5 {
 	}
 
 	public static void main(String[] args) {
+		StopWatch sw = new StopWatch();
+		sw.start();
 		HashMap<Integer, Pair> hm = new HashMap<Integer, Pair>();
 		try {
 			FileReader dataFile = new FileReader(args[0]);
@@ -49,8 +51,8 @@ public class PremPS5 {
 	        	if(p.count==0) continue;
 	        	count += (p.count*(p.count+1))/2;
 	        }
-	        
-	        System.out.println(count);
+	        sw.stop();
+	        System.out.println(count + " " + sw.getTime());
 		} catch (Exception e) {
 			System.out.println(e);
 		}
