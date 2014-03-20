@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -23,61 +24,36 @@ public class PremPS5 {
 	}
 
 	public static void main(String[] args) {
-		String[] arr ;
+		HashMap<Integer, Pair> hm = new HashMap<Integer, Pair>();
 		try {
 			FileReader dataFile = new FileReader(args[0]);
 	        BufferedReader bufferedDataFile = new BufferedReader(dataFile);
-	        String size = bufferedDataFile.readLine();
-	        String line;
-	        int i = 0;
+	        bufferedDataFile.readLine(); // discarding size
 	        
-	        arr = new String[Integer.parseInt(size)];
+	        String line;
 	        
 	        while ((line = bufferedDataFile.readLine()) != null) {
-				arr[i] = line;
-				i++;
+	        	String sLine = stringSort(line);
+	        	Pair p;
+	        	p = hm.get(sLine.length());
+	        	if(p==null) {
+	        		p = new Pair(new HashSet<String>(), 0);
+	        		hm.put(sLine.length(), p);
+	        	}
+	        	
+	        	if(p.hs.contains(sLine)) p.count++;
+	        	else p.hs.add(sLine);
 			}
-	        countPermurations(arr);
+	        int count = 0;
+	        for(Pair p : hm.values()) {
+	        	if(p.count==0) continue;
+	        	count += (p.count*(p.count+1))/2;
+	        }
+	        
+	        System.out.println(count);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-	}
-	
-	private static void countPermurations(String[] arr) {
-//		arr = new String[7];
-//		arr[0] = "BCDEFGH";
-//		arr[1] = "ABACD";
-//		arr[2] = "BDCEF";
-//		arr[3] = "BDCAA";
-//		arr[4] = "DBACA";
-//		arr[5] = "DABACA";
-//		arr[6] = "DABAC";
-		Arrays.sort(arr, new LengthFirstComparator());
-		System.out.println("Done first sort");
-		
-		int count = 0;
-		int start = 0; int length = arr[0].length();
-		for (int i = 1; i < arr.length; i++) {
-			if(arr[i].length()!=length) {
-				count += helper(arr, start, i);
-				length = arr[i].length();
-				start = i;
-			}
-		}
-		count += helper(arr, start, arr.length);
-		
-		System.out.println(count);
-	}
-	
-	private static int helper(String[] arr, int start, int end) {
-		HashSet<String> hm = new HashSet<String>();
-		int count = 0;
-		for (int i = start; i < end; i++) {
-			String s = stringSort (arr[i]);
-			if(hm.contains(s)) count++;
-			else hm.add(s);
-		}
-		return (count*(count+1))/2;
 	}
 	
 	private static String stringSort(String str) {
@@ -87,7 +63,13 @@ public class PremPS5 {
 	}
 }
 
-class LengthFirstComparator implements Comparator<String> {
+class Pair {
+	HashSet<String> hs; int count;
+	public Pair(HashSet<String> hs, int count) {
+		this.hs = hs;
+		this.count = count;
+	}
+}
 
 	/* (non-Javadoc)
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
